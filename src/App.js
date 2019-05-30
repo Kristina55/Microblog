@@ -12,6 +12,8 @@ class App extends Component {
       posts: []
     };
     this.addNewPost = this.addNewPost.bind(this);
+    this.editPost = this.editPost.bind(this);
+    this.deletePost = this.deletePost.bind(this);
   }
 
   addNewPost(post) {
@@ -21,12 +23,35 @@ class App extends Component {
     }));
   }
 
+  editPost(post) {
+    let currentPosts = this.state.posts;
+
+    // Loop through our posts and update the post with post.id
+    for (let p of currentPosts) {
+      if (p.id === post.id) {
+        p.title = post.title;
+        p.description = post.description;
+        p.body = post.body;
+      }
+    }
+  }
+
+  deletePost(id) {
+    this.setState({
+      posts: this.state.posts.filter(p => p.id !== id)
+    });
+  }
+
   render() {
     return (
       <BrowserRouter>
         <div className="App">
           <NavBox />
-          <Routes addNewPost={this.addNewPost} posts={this.state.posts} />
+          <Routes 
+            addNewPost={this.addNewPost} 
+            posts={this.state.posts} 
+            editPost={this.editPost} 
+            deletePost={this.deletePost} />
         </div>
       </BrowserRouter>
     );

@@ -5,12 +5,12 @@ import "./Home.css";
 class Home extends Component {
   render() {
     const post = this.props.posts.map(post => (
-      <li className="liStyle">
+      <li className="liStyle" key={post.id}>
         <Post
           title={post.title}
           description={post.description}
           body={post.body}
-          key={post.id}
+          id={post.id}
         />
       </li>
     ));

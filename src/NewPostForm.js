@@ -1,15 +1,29 @@
 import React, { Component } from "react";
-//import "./NewPostForm.css";
-import { Redirect, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 class NewPostForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      title: "",
-      description: "",
-      body: ""
-    };
+    let { post } = props;
+
+    // Funky kluge to populate form when doing an edit on a post:
+    if (post) {
+      this.state = {
+        title: post.title,
+        description: post.description,
+        body: post.body ,
+        id: post.id 
+      }
+    }
+    else {
+      this.state = {
+        title: "",
+        description: "",
+        body: "",
+        id: ""
+      };
+    }
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.cancel = this.cancel.bind(this);
@@ -21,9 +35,17 @@ class NewPostForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.props.addNewPost(this.state);
-    this.setState({ title: "", description: "", body: "" });
-    return this.props.history.push("/");
+
+    if (this.props.edit) {
+      this.props.editPost(this.state);
+      this.setState({ title: "", description: "", body: ""});
+      return this.props.history.push("/"+this.props.post.id);
+    }
+    else {
+      this.props.addNewPost(this.state);
+      this.setState({ title: "", description: "", body: "" });
+      return this.props.history.push("/");
+    }
   }
 
   cancel() {
@@ -31,9 +53,15 @@ class NewPostForm extends Component {
   }
 
   render() {
+    let title = 'New Post';
+
+    if (this.props.edit) {
+      title = 'Edit Post';
+    }
+
     return (
       <div>
-        <h1>New Post</h1>
+        <h1>{title}</h1>
         <form>
           <div>
             <label htmlFor="title">Title</label>
