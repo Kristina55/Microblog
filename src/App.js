@@ -11,13 +11,15 @@ class App extends Component {
     this.state = {
       posts: []
     };
+
     this.addNewPost = this.addNewPost.bind(this);
     this.editPost = this.editPost.bind(this);
     this.deletePost = this.deletePost.bind(this);
+    this.addComment = this.addComment.bind(this);
   }
 
   addNewPost(post) {
-    let newPost = { ...post, id: uuid() };
+    let newPost = { ...post, id: uuid(), comments:[] };
     this.setState(st => ({
       posts: [...st.posts, newPost]
     }));
@@ -42,6 +44,15 @@ class App extends Component {
     });
   }
 
+  addComment(comment) {
+    const postId = comment.id;
+    const commentText = comment.comment;
+    const commentId = uuid();
+    const commentObj = {id: commentId, commentText: commentText};
+    let post = this.state.posts.find(p => p.id === postId);
+    post.comments.push(commentObj);
+  }
+
   render() {
     return (
       <BrowserRouter>
@@ -51,7 +62,9 @@ class App extends Component {
             addNewPost={this.addNewPost} 
             posts={this.state.posts} 
             editPost={this.editPost} 
-            deletePost={this.deletePost} />
+            deletePost={this.deletePost}
+            addComment={this.addComment} 
+          />
         </div>
       </BrowserRouter>
     );
