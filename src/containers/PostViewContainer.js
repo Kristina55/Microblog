@@ -3,6 +3,7 @@ import NewPostForm from "../components/NewPostForm";
 import CommentList from "../CommentList";
 import { connect } from "react-redux";
 import uuid from "uuid/v4";
+import { addComment } from "../actions";
 
 class PostViewContainer extends Component {
   constructor(props) {
@@ -36,15 +37,22 @@ class PostViewContainer extends Component {
     e.preventDefault();
     const id = this.props.match.params.postId;
 
-    console.log(this.props);
+    console.log("ID: ", id);
+    console.log("Add Comment Props: ", this.props);
+    let commentObj = {
+      postId: id,
+      commentId: uuid(),
+      commentText: this.state.comment
+    }
 
+    this.props.addComment(commentObj);
     // this.props.addComment({
-    //   id: this.props.posts[id],
-    //   comment: this.state.comment
+    //   id: id,
+    //   comment: {this.state.comment}
     // });
 
     // Need to "re-render" this componet:
-    return this.props.history.push(`/${this.props.posts[0].id}`);
+    //return this.props.history.push(`/${this.props.posts[0].id}`);
   }
 
   render() {
@@ -53,8 +61,8 @@ class PostViewContainer extends Component {
     let form = this.state.showForm ? (
       <NewPostForm edit={true} post={post} editPost={this.props.editPost} />
     ) : (
-      ""
-    );
+        ""
+      );
     return (
       <div>
         {form}
@@ -86,6 +94,9 @@ function mapStateToProps(state) {
   };
 }
 
-const connectedComponent = connect(mapStateToProps);
+const connectedComponent = connect(
+  mapStateToProps,
+  { addComment }
+);
 
 export default connectedComponent(PostViewContainer);

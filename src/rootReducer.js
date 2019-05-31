@@ -9,10 +9,17 @@ function rootReducer(state = INITIAL_STATE, action) {
     case ADD_POST:
       const { id, ...rest } = action.payload;
       return {
-        posts: { ...state.posts, [id]: { ...rest } }
+        posts: { ...state.posts, [id]: rest }
       };
     case ADD_COMMENT:
-      return console.log("ADD COMMENT");
+      const { postId, ...commentObj } = action.payload;
+      
+      const newPost = { 
+        ...state.posts[postId], 
+        comments: [ ...state.posts[postId].comments, commentObj ] 
+      };
+
+      return { ...state, posts: {...state.posts, [postId]: newPost } };
     default:
       return state;
   }
