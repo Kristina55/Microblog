@@ -1,13 +1,15 @@
-import React, { Component } from 'react';
-import NewPostForm from './NewPostForm';
-import CommentList from './CommentList';
+import React, { Component } from "react";
+import NewPostForm from "../components/NewPostForm";
+import CommentList from "../CommentList";
+import { connect } from "react-redux";
+import uuid from "uuid/v4";
 
-export default class PostView extends Component {
+class PostViewContainer extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      comment: '',
+      comment: "",
       showForm: false
     };
 
@@ -15,7 +17,7 @@ export default class PostView extends Component {
     this.deletePost = this.deletePost.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.addComment = this.addComment.bind(this);
-  };
+  }
 
   showEditForm() {
     this.setState({ showForm: true });
@@ -32,17 +34,27 @@ export default class PostView extends Component {
 
   addComment(e) {
     e.preventDefault();
-    
-    this.props.addComment({id: this.props.posts[0].id, comment: this.state.comment});
-    
+    const id = this.props.match.params.postId;
+
+    console.log(this.props);
+
+    // this.props.addComment({
+    //   id: this.props.posts[id],
+    //   comment: this.state.comment
+    // });
+
     // Need to "re-render" this componet:
     return this.props.history.push(`/${this.props.posts[0].id}`);
   }
 
   render() {
-    let post = this.props.posts.find(p => p.id === this.props.match.params.postId);
+    let post = this.props.posts[this.props.match.params.postId];
 
-    let form = this.state.showForm ? <NewPostForm edit={true} post={post} editPost={this.props.editPost} /> : '';
+    let form = this.state.showForm ? (
+      <NewPostForm edit={true} post={post} editPost={this.props.editPost} />
+    ) : (
+      ""
+    );
     return (
       <div>
         {form}
@@ -54,11 +66,26 @@ export default class PostView extends Component {
         <button onClick={this.deletePost}>Delete</button>
         <hr />
         <form onSubmit={this.addComment}>
-          <input type='text' name='comment' placeholder='comment' onChange={this.handleChange}></input>
-          <button type='submit'>Add Comment</button>
+          <input
+            type="text"
+            name="comment"
+            placeholder="comment"
+            onChange={this.handleChange}
+          />
+          <button type="submit">Add Comment</button>
         </form>
         <CommentList comments={post.comments} />
       </div>
-    )
+    );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    posts: state.posts
+  };
+}
+
+const connectedComponent = connect(mapStateToProps);
+
+export default connectedComponent(PostViewContainer);

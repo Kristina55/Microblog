@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
-import PostList from "./PostList";
-import Home from "./Home";
-import PostView from "./PostView";
+import PostListContainer from "./containers/PostListContainer";
+import HomeContainer from "./containers/HomeContainer";
+import PostViewContainer from "./containers/PostViewContainer";
 
 class Routes extends Component {
   render() {
@@ -12,13 +12,15 @@ class Routes extends Component {
           <Route
             exact
             path="/"
-            render={props => <Home {...props} posts={this.props.posts} />}
+            render={props => (
+              <HomeContainer {...props} posts={this.props.posts} />
+            )}
           />
           <Route
             exact
             path="/new"
             render={props => (
-              <PostList
+              <PostListContainer
                 {...props}
                 addNewPost={this.props.addNewPost}
                 posts={this.props.posts}
@@ -29,10 +31,10 @@ class Routes extends Component {
             exact
             path="/:postId"
             render={props => (
-              <PostView 
-                {...props} 
-                posts={this.props.posts} 
-                editPost={this.props.editPost} 
+              <PostViewContainer
+                {...props}
+                posts={this.props.posts}
+                editPost={this.props.editPost}
                 deletePost={this.props.deletePost}
                 addComment={this.props.addComment}
               />

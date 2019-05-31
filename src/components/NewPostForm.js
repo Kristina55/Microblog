@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
+import uuid from "uuid/v4";
 
 class NewPostForm extends Component {
   constructor(props) {
@@ -11,11 +12,11 @@ class NewPostForm extends Component {
       this.state = {
         title: post.title,
         description: post.description,
-        body: post.body ,
-        id: post.id 
-      }
-    }
-    else {
+        body: post.body,
+        id: post.id,
+        showForm: false
+      };
+    } else {
       this.state = {
         title: "",
         description: "",
@@ -27,6 +28,11 @@ class NewPostForm extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.cancel = this.cancel.bind(this);
+    this.toggleView = this.toggleView.bind(this);
+  }
+
+  toggleView() {
+    this.setState({ showForm: true });
   }
 
   handleChange(e) {
@@ -35,14 +41,12 @@ class NewPostForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
     if (this.props.edit) {
       this.props.editPost(this.state);
-      this.setState({ title: "", description: "", body: ""});
-      return this.props.history.push("/"+this.props.post.id);
-    }
-    else {
-      this.props.addNewPost(this.state);
+      this.setState({ title: "", description: "", body: "" });
+      return this.props.history.push("/" + this.props.post.id);
+    } else {
+      this.props.addPost({ ...this.state, id: uuid(), comments: [] });
       this.setState({ title: "", description: "", body: "" });
       return this.props.history.push("/");
     }
@@ -53,10 +57,10 @@ class NewPostForm extends Component {
   }
 
   render() {
-    let title = 'New Post';
+    let title = "New Post";
 
     if (this.props.edit) {
-      title = 'Edit Post';
+      title = "Edit Post";
     }
 
     return (

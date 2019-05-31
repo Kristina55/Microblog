@@ -19,7 +19,7 @@ class App extends Component {
   }
 
   addNewPost(post) {
-    let newPost = { ...post, id: uuid(), comments:[] };
+    let newPost = { ...post, id: uuid(), comments: [] };
     this.setState(st => ({
       posts: [...st.posts, newPost]
     }));
@@ -48,25 +48,23 @@ class App extends Component {
     const postId = comment.id;
     const commentText = comment.comment;
     const commentId = uuid();
-    const commentObj = {id: commentId, commentText: commentText};
+    const commentObj = { id: commentId, commentText: commentText };
     let post = this.state.posts.find(p => p.id === postId);
     post.comments.push(commentObj);
   }
 
   render() {
     return (
-      <BrowserRouter>
-        <div className="App">
-          <NavBox />
-          <Routes 
-            addNewPost={this.addNewPost} 
-            posts={this.state.posts} 
-            editPost={this.editPost} 
-            deletePost={this.deletePost}
-            addComment={this.addComment} 
-          />
-        </div>
-      </BrowserRouter>
+      <div className="App">
+        <NavBox />
+        <Routes
+          addNewPost={this.addNewPost}
+          posts={this.state.posts}
+          editPost={this.editPost}
+          deletePost={this.deletePost}
+          addComment={this.addComment}
+        />
+      </div>
     );
   }
 }
