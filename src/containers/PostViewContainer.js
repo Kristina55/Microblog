@@ -37,22 +37,18 @@ class PostViewContainer extends Component {
     e.preventDefault();
     const id = this.props.match.params.postId;
 
-    console.log("ID: ", id);
-    console.log("Add Comment Props: ", this.props);
+    // Create a simple comment obj to pass to action:
     let commentObj = {
       postId: id,
       commentId: uuid(),
       commentText: this.state.comment
     }
 
+    // Call the action to add the comment:
     this.props.addComment(commentObj);
-    // this.props.addComment({
-    //   id: id,
-    //   comment: {this.state.comment}
-    // });
 
     // Need to "re-render" this componet:
-    //return this.props.history.push(`/${this.props.posts[0].id}`);
+    return this.props.history.push(`/${id}`);
   }
 
   render() {

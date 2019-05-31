@@ -3,7 +3,7 @@ import Comment from './Comment';
 
 export default class CommentList extends Component {
   render() {
-    const comments = this.props.comments.map(c => <Comment id={c.id} text={c.commentText} />)
+    const comments = this.props.comments.map(c => <div key={c.commentId}><Comment id={c.commentId} text={c.commentText} /></div>)
     return (
       <div>
         {comments}
