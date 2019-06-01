@@ -13,7 +13,7 @@ class Routes extends Component {
             exact
             path="/"
             render={props => (
-              <HomeContainer {...props} posts={this.props.posts} />
+              <HomeContainer {...props} />
             )}
           />
           <Route
@@ -22,8 +22,6 @@ class Routes extends Component {
             render={props => (
               <PostListContainer
                 {...props}
-                addNewPost={this.props.addNewPost}
-                posts={this.props.posts}
               />
             )}
           />
@@ -33,10 +31,7 @@ class Routes extends Component {
             render={props => (
               <PostViewContainer
                 {...props}
-                posts={this.props.posts}
-                editPost={this.props.editPost}
                 deletePost={this.props.deletePost}
-                addComment={this.props.addComment}
               />
             )}
           />

@@ -1,4 +1,4 @@
-import { ADD_POST, ADD_COMMENT } from "./actionTypes";
+import { ADD_POST, ADD_COMMENT, EDIT_POST} from "./actionTypes";
 
 const INITIAL_STATE = {
   posts: {}
@@ -27,6 +27,19 @@ function rootReducer(state = INITIAL_STATE, action) {
 
       // Then update the state with the updated post:
       return { ...state, posts: {...state.posts, [postId]: newPost } };
+    case EDIT_POST:
+      // Grab id:
+      let editId = action.payload.id;
+      
+      // remove relics from edit form (id, 'showForm')
+      delete action.payload.id;
+      delete action.payload.showForm;
+
+      // Plug any comments we have for this post back into payload:
+      action.payload.comments = state.posts[editId].comments;
+
+      // Now return the updated state:
+      return { ...state, posts: {...state.posts, [editId]: action.payload } };
     default:
       return state;
   }

@@ -3,7 +3,7 @@ import NewPostForm from "../components/NewPostForm";
 import CommentList from "../CommentList";
 import { connect } from "react-redux";
 import uuid from "uuid/v4";
-import { addComment } from "../actions";
+import { addComment, editPost } from "../actions";
 
 class PostViewContainer extends Component {
   constructor(props) {
@@ -92,7 +92,7 @@ function mapStateToProps(state) {
 
 const connectedComponent = connect(
   mapStateToProps,
-  { addComment }
+  { addComment, editPost }
 );
 
 export default connectedComponent(PostViewContainer);

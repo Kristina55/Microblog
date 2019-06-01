@@ -42,9 +42,20 @@ class NewPostForm extends Component {
   handleSubmit(e) {
     e.preventDefault();
     if (this.props.edit) {
-      this.props.editPost(this.state);
+      
+      // Grab the post ID from the url params:
+      const { postId } = this.props.match.params;
+
+      // Oddly setting state with  id wasn't working
+      // so taking big hammer approach  and spreaddin
+      // state into an object and setting the ID that way:
+      this.props.editPost({...this.state, id: postId});
+
+      // Clear the form:
       this.setState({ title: "", description: "", body: "" });
-      return this.props.history.push("/" + this.props.post.id);
+
+      // Re-push the current page:
+      return this.props.history.push(`/${postId}`);
     } else {
       this.props.addPost({ ...this.state, id: uuid(), comments: [] });
       this.setState({ title: "", description: "", body: "" });
